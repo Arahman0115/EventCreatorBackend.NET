@@ -1,0 +1,6 @@
+@ProtestMapAPI_HostAddress = http://localhost:5232
+
+GET {{ProtestMapAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
