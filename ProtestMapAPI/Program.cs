@@ -9,6 +9,8 @@ using ProtestMapAPI.Services;
 using System.Text;
 using System.Text.Json;
 using ProtestMapAPI.Filters;
+using Amazon.S3;
+using Amazon.Extensions.NETCore.Setup;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,13 +23,19 @@ builder.Services.AddLogging(logging =>
     // You can also add other loggers like file logging, etc., if needed
 });
 
+// Add AWS SDK Configuration
+builder.Services.AddSingleton<IAmazonS3>(sp =>
+{
+    var awsOptions = builder.Configuration.GetAWSOptions();  // Get AWS options from Configuration
+    return awsOptions.CreateServiceClient<IAmazonS3>();  // Create an S3 client
+});
+
 // CORS Configuration
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
         policy => policy
-            .WithOrigins("http://localhost:3000")
-            .WithOrigins("http://march-frontend.s3-website-us-east-1.amazonaws.com")
+            .WithOrigins("http://march-frontend.s3-website-us-east-1.amazonaws.com") // Your S3 URL here
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials()
@@ -39,11 +47,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
         sqlOptions => sqlOptions.EnableRetryOnFailure()));
 
-
 // Identity Authentication
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+
+// Kestrel Configuration
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(80);  // Listen on port 80 for HTTP traffic
+});
 
 // Configure Application Cookie to return JSON instead of redirecting
 builder.Services.ConfigureApplicationCookie(options =>
@@ -139,8 +152,8 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = string.Empty;
     });
 }
-app.UseDeveloperExceptionPage();
 
+app.UseDeveloperExceptionPage();
 app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");
 app.UseAuthentication();

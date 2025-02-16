@@ -1,6 +1,6 @@
-@ProtestMapAPI_HostAddress = http://localhost:5232
+@ProtestMapAPI_HostAddress = 3.83.93.14
 
-GET {{ProtestMapAPI_HostAddress}}/weatherforecast/
+GET {{ProtestMapAPI_HostAddress}}/protests
 Accept: application/json
 
 ###
