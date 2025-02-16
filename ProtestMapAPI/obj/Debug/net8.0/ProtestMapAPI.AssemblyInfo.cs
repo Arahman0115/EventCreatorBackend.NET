@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProtestMapAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2c969d326ae335fb004c179e7fe3f5b4a1e721a1")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProtestMapAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProtestMapAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

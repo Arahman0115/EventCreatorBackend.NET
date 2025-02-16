@@ -9,6 +9,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using ProtestMapAPI.Services;
 
 namespace ProtestMapAPI.Controllers
 {
@@ -20,7 +21,9 @@ namespace ProtestMapAPI.Controllers
         private readonly ILogger<ProtestController> _logger;
         private readonly GeocodingService _geocodingService;
 
-        public ProtestController(ApplicationDbContext context, ILogger<ProtestController> logger, GeocodingService geocodingService)
+        private readonly JwtService _jwtService;
+
+        public ProtestController(ApplicationDbContext context, ILogger<ProtestController> logger, GeocodingService geocodingService, JwtService jwtService)
         {
             _context = context;
             _logger = logger;
@@ -167,6 +170,54 @@ namespace ProtestMapAPI.Controllers
 
             return NoContent();
         }
+        // GET: api/protest/user-protests
+        [HttpGet("user-protests")]
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<Protest>>> GetUserProtests()
+        {
+            try
+            {
+                // Retrieve all claims
+                var claimsList = User.Claims.ToList();
+
+                // Ensure there are at least two claims before accessing the second
+                if (claimsList.Count >= 2)
+                {
+                    // Access the second claim (assumed to be the user ID)
+                    var userId = claimsList[1].Value;
+
+                    if (string.IsNullOrEmpty(userId))
+                    {
+                        _logger.LogWarning("User ID not found in token");
+                        return Unauthorized("User ID not found in token");
+                    }
+
+                    // Log the user ID for debugging purposes
+                    _logger.LogInformation("User ID from second claim: {UserId}", userId);
+
+                    // Retrieve all protests created by the user
+                    var userProtests = await _context.Protests
+                                                    .Where(p => p.CreatedByUserId == userId)
+                                                    .ToListAsync();
+
+                    return Ok(userProtests);
+                }
+                else
+                {
+                    _logger.LogWarning("Insufficient claims in token");
+                    return Unauthorized("Insufficient claims in token");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving user protests");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+
+
+
 
         // DELETE: api/protests/{id} - Delete a protest (only by creator)
         [HttpDelete("{id}")]

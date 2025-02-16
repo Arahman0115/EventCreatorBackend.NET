@@ -171,3 +171,4 @@
 /home/ahnaf/March/ProtestMapAPI/obj/Debug/net8.0/ProtestMapAPI.genruntimeconfig.cache
 /home/ahnaf/March/ProtestMapAPI/obj/Debug/net8.0/ref/ProtestMapAPI.dll
 /home/ahnaf/March/ProtestMapAPI/bin/Debug/net8.0/Newtonsoft.Json.dll
+/home/ahnaf/March/ProtestMapAPI/obj/Debug/net8.0/ProtestMapAPI.sourcelink.json
