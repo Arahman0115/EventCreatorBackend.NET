@@ -15,6 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add logging configuration
 builder.Services.AddLogging(logging =>
 {
+    logging.ClearProviders(); // Remove other logging providers
     logging.AddConsole();  // Logs to the console
     logging.AddDebug();    // Logs to the debug output window
     // You can also add other loggers like file logging, etc., if needed
@@ -26,6 +27,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend",
         policy => policy
             .WithOrigins("http://localhost:3000")
+            .WithOrigins("http://march-frontend.s3-website-us-east-1.amazonaws.com")
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials()
@@ -34,7 +36,9 @@ builder.Services.AddCors(options =>
 
 // Database Connection
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+        sqlOptions => sqlOptions.EnableRetryOnFailure()));
+
 
 // Identity Authentication
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
