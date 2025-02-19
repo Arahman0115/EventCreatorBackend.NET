@@ -172,3 +172,8 @@
 /home/ahnaf/March/ProtestMapAPI/obj/Debug/net8.0/ref/ProtestMapAPI.dll
 /home/ahnaf/March/ProtestMapAPI/bin/Debug/net8.0/Newtonsoft.Json.dll
 /home/ahnaf/March/ProtestMapAPI/obj/Debug/net8.0/ProtestMapAPI.sourcelink.json
+/home/ahnaf/March/ProtestMapAPI/bin/Debug/net8.0/AWSSDK.Core.dll
+/home/ahnaf/March/ProtestMapAPI/bin/Debug/net8.0/AWSSDK.Extensions.NETCore.Setup.dll
+/home/ahnaf/March/ProtestMapAPI/bin/Debug/net8.0/AWSSDK.S3.dll
+/home/ahnaf/March/ProtestMapAPI/bin/Debug/net8.0/MySqlConnector.dll
+/home/ahnaf/March/ProtestMapAPI/bin/Debug/net8.0/Pomelo.EntityFrameworkCore.MySql.dll

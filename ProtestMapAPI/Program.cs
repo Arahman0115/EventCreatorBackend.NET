@@ -1,17 +1,17 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore; // Still needed for EF Core functionality
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ProtestMapAPI.Data;
 using ProtestMapAPI.Models;
 using ProtestMapAPI.Services;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure; // Add this for MySQL EF Core
 using System.Text;
 using System.Text.Json;
 using ProtestMapAPI.Filters;
 using Amazon.S3;
 using Amazon.Extensions.NETCore.Setup;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add logging configuration
@@ -44,8 +44,8 @@ builder.Services.AddCors(options =>
 
 // Database Connection
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-        sqlOptions => sqlOptions.EnableRetryOnFailure()));
+    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
+        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))));
 
 // Identity Authentication
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -145,6 +145,7 @@ var app = builder.Build();
 // Middleware Pipeline
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
@@ -153,10 +154,9 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseDeveloperExceptionPage();
-app.UseHttpsRedirection();
+app.UseRouting(); // Add this line
 app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseHttpsRedirection();
 app.MapControllers();
-app.Run();

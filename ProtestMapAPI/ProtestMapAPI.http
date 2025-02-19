@@ -1,4 +1,4 @@
-@ProtestMapAPI_HostAddress = 3.83.93.14:80/api
+@ProtestMapAPI_HostAddress = 34.201.180.20:80
 
 GET {{ProtestMapAPI_HostAddress}}/protests
 Accept: application/json
