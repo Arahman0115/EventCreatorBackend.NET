@@ -377,9 +377,6 @@ Check that your frontend URL is added to the CORS policy in `Program.cs`.
 ### Geocoding Failures
 Verify the Google Geocoding API is configured and has valid billing setup.
 
-## License
-
-This project is part of the EventCreator application suite.
 
 ## Contact
 
