@@ -72,8 +72,6 @@ Add JWT configuration to `appsettings.json`:
 }
 ```
 
-> ⚠️ **IMPORTANT**: Generate a strong random key at least 32 characters long. Never commit actual secrets to version control. Use environment variables in production.
-
 ### 5. Configure AWS S3 (Optional)
 
 Add AWS configuration to `appsettings.json`:
