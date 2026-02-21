@@ -64,13 +64,15 @@ Add JWT configuration to `appsettings.json`:
 ```json
 {
   "JwtSettings": {
-    "Key": "your-secret-key-min-32-characters-long",
+    "Key": "REPLACE_WITH_STRONG_RANDOM_KEY_MIN_32_CHARS",
     "Issuer": "ProtestMapAPI",
     "Audience": "ProtestMapAPIUsers",
     "TokenValidityMins": 60
   }
 }
 ```
+
+> ⚠️ **IMPORTANT**: Generate a strong random key at least 32 characters long. Never commit actual secrets to version control. Use environment variables in production.
 
 ### 5. Configure AWS S3 (Optional)
 
@@ -366,7 +368,7 @@ dotnet ef database update
 ## Troubleshooting
 
 ### JWT Key Error
-Ensure `JwtSettings:Key` is at least 32 characters long and configured in `appsettings.json`.
+Ensure `JwtSettings:Key` is at least 32 characters long and uses a strong random value. Never hardcode secrets - use environment variables or AWS Secrets Manager in production.
 
 ### Database Connection Error
 Verify MySQL is running and the connection string in `appsettings.json` is correct.
